@@ -27,7 +27,7 @@ import module_from_set_one
 import shared_module # reads from s3://module/set/one
 ```
 
-[![](http://img.youtube.com/vi/M9o9SF5-Pzw/0.jpg)](https://youtu.be/M9o9SF5-Pzw?t=824)
+[![](https://raw.githubusercontent.com/1kbgz/fsspec-union/refs/heads/main/docs/img/yt.png)](https://youtu.be/M9o9SF5-Pzw?t=824)
 
 > [!NOTE]
 > This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
