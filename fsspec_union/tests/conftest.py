@@ -7,9 +7,15 @@ from fsspec import url_to_fs
 
 
 @pytest.fixture(scope="function")
+def fs_union():
+    fs, _ = url_to_fs(f"union::dir::file://{Path(__file__).parent}/local1::dir::file://{Path(__file__).parent}/local2")
+    yield fs
+
+
+@pytest.fixture(scope="function")
 def fs_union_importer():
     sys_meta_path_length = len(sys.meta_path)
-    fs, _ = url_to_fs(f"union::python::file://{Path(__file__).parent}/local1::python::file://{Path(__file__).parent}/local2")
+    fs, _ = url_to_fs(f"python::union::dir::file://{Path(__file__).parent}/local1::dir::file://{Path(__file__).parent}/local2")
     import masked
 
     importlib.reload(masked)
@@ -20,9 +26,15 @@ def fs_union_importer():
 
 
 @pytest.fixture(scope="function")
+def fs_union_inverse():
+    fs, _ = url_to_fs(f"union::dir::file://{Path(__file__).parent}/local2::dir::file://{Path(__file__).parent}/local1")
+    yield fs
+
+
+@pytest.fixture(scope="function")
 def fs_union_importer_inverse():
     sys_meta_path_length = len(sys.meta_path)
-    fs, _ = url_to_fs(f"union::python::file://{Path(__file__).parent}/local2::python::file://{Path(__file__).parent}/local1")
+    fs, _ = url_to_fs(f"python::union::dir::file://{Path(__file__).parent}/local2::dir::file://{Path(__file__).parent}/local1")
     import masked
 
     importlib.reload(masked)

@@ -28,7 +28,7 @@ classifiers = [
 
 dependencies = [
     "fsspec@git+https://github.com/fsspec/filesystem_spec#egg=c23674c4c7bd60f8c3b41d0c4bbcefe4d18d6c70",
-    "fsspec-python@git+https://github.com/1kbgz/fsspec-python#egg=9dfe6ecc5410ef871083f2b0d0cbb008acdb7f4d",
+    "fsspec-python@git+https://github.com/1kbgz/fsspec-python#egg=216dee3f3b95cd944910acca8b98626d4795ca9a",
 ]
 
 [project.entry-points."fsspec.specs"]
