@@ -9,5 +9,25 @@ Union handling for fsspec filesystems
 
 ## Overview
 
+This library allows for efficient layering of [fsspec filesystems](https://github.com/fsspec/filesystem_spec) as a read-through cache via a chained fsspec filesystem `union::`.
+
+Layer two paths, reading and writing files from/to the first satisfying location in `/path/one`, `/path/two`.
+
+```python
+fs = open("union::dir::file:///path/one/::dir::file:///path/two/")
+```
+
+Importing Python modules from the first satisfying S3 location, via [fsspec-python](https://github.com/1kbgz/fsspec-python):
+
+```python
+fs = open("python::union::s3://module/set/one::s3://module/set/two)
+
+import module_from_set_one
+import module_from_set_one
+import shared_module # reads from s3://module/set/one
+```
+
+[![](http://img.youtube.com/vi/M9o9SF5-Pzw/0.jpg)](https://youtu.be/M9o9SF5-Pzw?t=824)
+
 > [!NOTE]
 > This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
