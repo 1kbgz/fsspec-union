@@ -23,7 +23,7 @@ Importing Python modules from the first satisfying S3 location, via [fsspec-pyth
 fs = open("python::union::s3://module/set/one::s3://module/set/two)
 
 import module_from_set_one
-import module_from_set_one
+import module_from_set_two
 import shared_module # reads from s3://module/set/one
 ```
 
