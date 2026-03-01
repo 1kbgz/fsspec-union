@@ -82,6 +82,7 @@ branch = true
 omit = [
     "fsspec_union/tests/integration/",
 ]
+
 [tool.coverage.report]
 exclude_also = [
     "raise NotImplementedError",
