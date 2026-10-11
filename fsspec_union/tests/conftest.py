@@ -16,7 +16,7 @@ def fs_union():
 def fs_union_importer():
     sys_meta_path_length = len(sys.meta_path)
     fs, _ = url_to_fs(f"python::union::dir::file://{Path(__file__).parent}/local1::dir::file://{Path(__file__).parent}/local2")
-    import masked
+    import masked  # ty: ignore[unresolved-import]  # Module provided by the filesystem import fixture.
 
     importlib.reload(masked)
     yield fs
@@ -35,7 +35,7 @@ def fs_union_inverse():
 def fs_union_importer_inverse():
     sys_meta_path_length = len(sys.meta_path)
     fs, _ = url_to_fs(f"python::union::dir::file://{Path(__file__).parent}/local2::dir::file://{Path(__file__).parent}/local1")
-    import masked
+    import masked  # ty: ignore[unresolved-import]  # Module provided by the filesystem import fixture.
 
     importlib.reload(masked)
     yield fs

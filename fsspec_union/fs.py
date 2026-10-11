@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import ClassVar
+
 from fsspec import filesystem, get_filesystem_class
 from fsspec.implementations.chained import ChainedFileSystem
 
@@ -9,7 +11,7 @@ __all__ = ("UnionFileSystem",)
 class UnionFileSystem(ChainedFileSystem):
     """Union filesystem"""
 
-    protocol: str = "union"
+    protocol: ClassVar[str] = "union"
 
     def __init__(self, target_protocol=None, target_options=None, fs=None, **kwargs):
         """
@@ -24,7 +26,8 @@ class UnionFileSystem(ChainedFileSystem):
         if not (fs is None) ^ (target_protocol is None):
             raise ValueError("Both filesystems (fs) and target_protocol may not be both given.")
 
-        if target_protocol:
+        target_options = target_options or {}
+        if target_protocol is not None:
             # unpack the targets and then instantiate in reverse order
             fs_options = [{"target_protocol": target_protocol, "target_options": kwargs}]
             fss = []
@@ -57,6 +60,7 @@ class UnionFileSystem(ChainedFileSystem):
             self.fss = fss
             self.fs = fss[0]
         else:
+            assert fs is not None
             self.fss = [fs]
             self.fs = fs
 
@@ -65,9 +69,9 @@ class UnionFileSystem(ChainedFileSystem):
             if hasattr(fs, "exit"):
                 fs.exit()
 
-    def exists(self, path):
+    def exists(self, path, **kwargs):
         for fs in self.fss:
-            if fs.exists(path):
+            if fs.exists(path, **kwargs):
                 return True
         return False
 
@@ -89,13 +93,13 @@ class UnionFileSystem(ChainedFileSystem):
                 return fs.info(path, **kwargs)
         raise FileNotFoundError(f"File {path} not found in any of the union filesystems.")
 
-    def open(self, path, mode="rb", **kwargs):
+    def open(self, path, mode="rb", block_size=None, cache_options=None, compression=None, **kwargs):
         if "w" in mode or "a" in mode or "+" in mode:
             # Open against first filesystem only
-            return self.fss[0].open(path, mode=mode, **kwargs)
+            return self.fss[0].open(path, mode=mode, block_size=block_size, cache_options=cache_options, compression=compression, **kwargs)
         for fs in self.fss:
             if fs.exists(path):
-                return fs.open(path, mode=mode, **kwargs)
+                return fs.open(path, mode=mode, block_size=block_size, cache_options=cache_options, compression=compression, **kwargs)
         raise FileNotFoundError(f"File {path} not found in any of the union filesystems.")
 
     @property
