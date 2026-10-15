@@ -144,3 +144,14 @@ section-order = [
     "F401",
     "F403",
 ]
+
+[tool.yardang]
+title = "fsspec-union"
+root = "README.md"
+pages = [
+    "docs/tutorial.md",
+    "docs/how-to-configure.md",
+    "docs/reference.md",
+    "docs/explanation.md",
+]
+use-autoapi = false
