@@ -1,33 +1,26 @@
 # fsspec-union
 
-Union handling for fsspec filesystems
+Look up paths across ordered fsspec filesystems.
 
 [![Build Status](https://github.com/1kbgz/fsspec-union/actions/workflows/build.yaml/badge.svg?branch=main&event=push)](https://github.com/1kbgz/fsspec-union/actions/workflows/build.yaml)
 [![codecov](https://codecov.io/gh/1kbgz/fsspec-union/branch/main/graph/badge.svg)](https://codecov.io/gh/1kbgz/fsspec-union)
 [![License](https://img.shields.io/github/license/1kbgz/fsspec-union)](https://github.com/1kbgz/fsspec-union)
 [![PyPI](https://img.shields.io/pypi/v/fsspec-union.svg)](https://pypi.python.org/pypi/fsspec-union)
-
-## Overview
-
-This library allows for efficient layering of [fsspec filesystems](https://github.com/fsspec/filesystem_spec) as a read-through cache via a chained fsspec filesystem `union::`.
-
-Layer two paths, reading and writing files from/to the first satisfying location in `/path/one`, `/path/two`.
-
-```python
-fs = open("union::dir::file:///path/one/::dir::file:///path/two/")
-```
-
-Importing Python modules from the first satisfying S3 location, via [fsspec-python](https://github.com/1kbgz/fsspec-python):
-
-```python
-fs = open("python::union::s3://module/set/one::s3://module/set/two)
-
-import module_from_set_one
-import module_from_set_two
-import shared_module # reads from s3://module/set/one
-```
-
 [![](https://raw.githubusercontent.com/1kbgz/fsspec-union/refs/heads/main/docs/img/yt.png)](https://youtu.be/M9o9SF5-Pzw?t=824)
 
-> [!NOTE]
-> This library was generated using [copier](https://copier.readthedocs.io/en/stable/) from the [Base Python Project Template repository](https://github.com/python-project-templates/base).
+`fsspec-union` combines path-existence and metadata lookup across an ordered set
+of backends. The first backend containing a path determines its metadata and kind.
+Ordinary delegated operations, including listing and `open`, currently use the
+first backend exposing that method. There is no read-through cache or copy-up.
+
+## Documentation
+
+[Look up files in two directories](docs/tutorial.md) builds a local union and
+checks path precedence. [Configure union roots](docs/how-to-configure.md) covers
+chained URLs and cleanup. The [reference](docs/reference.md) lists lookup and
+method-delegation behavior; [Ordered lookup and delegation](docs/explanation.md)
+explains the distinction.
+
+The [project talk](https://youtu.be/M9o9SF5-Pzw?t=824) introduces the original use case.
+
+[![Project talk](docs/img/yt.png)](https://youtu.be/M9o9SF5-Pzw?t=824)
